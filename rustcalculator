@@ -1,0 +1,66 @@
+use std::io;
+
+// Define an enum for arithmetic operations
+enum Operation {
+    Add(f64, f64),
+    Subtract(f64, f64),
+    Multiply(f64, f64),
+    Divide(f64, f64),
+}
+
+// Function to calculate the result based on the Operation enum
+fn calculate(op: Operation) -> f64 {
+    match op {
+        Operation::Add(a, b) => a + b,
+        Operation::Subtract(a, b) => a - b,
+        Operation::Multiply(a, b) => a * b,
+        Operation::Divide(a, b) => {
+            if b != 0.0 {
+                a / b
+            } else {
+                println!("Error: Division by zero is not allowed.");
+                0.0
+            }
+        }
+    }
+}
+
+fn main() {
+    // Prompt the user for input
+    println!("Enter the first number:");
+    let mut first_number = String::new();
+    io::stdin()
+        .read_line(&mut first_number)
+        .expect("Failed to read input.");
+    let first_number: f64 = first_number.trim().parse().expect("Invalid number!");
+
+    println!("Enter the operation (+, -, *, /):");
+    let mut operation = String::new();
+    io::stdin()
+        .read_line(&mut operation)
+        .expect("Failed to read input.");
+    let operation = operation.trim();
+
+    println!("Enter the second number:");
+    let mut second_number = String::new();
+    io::stdin()
+        .read_line(&mut second_number)
+        .expect("Failed to read input.");
+    let second_number: f64 = second_number.trim().parse().expect("Invalid number!");
+
+    // Create the appropriate Operation enum instance
+    let op = match operation {
+        "+" => Operation::Add(first_number, second_number),
+        "-" => Operation::Subtract(first_number, second_number),
+        "*" => Operation::Multiply(first_number, second_number),
+        "/" => Operation::Divide(first_number, second_number),
+        _ => {
+            println!("Invalid operation! Please use +, -, *, or /.");
+            return;
+        }
+    };
+
+    // Calculate and print the result
+    let result = calculate(op);
+    println!("The result is: {}", result);
+}
